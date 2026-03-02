@@ -1,0 +1,11 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "\\$f": true,
+        "Test-Path": true,
+        "\\$size": true,
+        "Get-Item": true,
+        "npx jest": true,
+        "useFilters": true,
+        "adminDashboard": true
+    }
+}

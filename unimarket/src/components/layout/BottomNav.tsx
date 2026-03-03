@@ -25,7 +25,8 @@ function NavItem({
       aria-label={label}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "flex flex-col items-center gap-1 transition-all",
+        "flex flex-col items-center gap-1 transition-all rounded-lg p-1",
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
         active ? "text-indigo-600 scale-110" : "text-slate-400 hover:text-slate-600"
       )}
     >

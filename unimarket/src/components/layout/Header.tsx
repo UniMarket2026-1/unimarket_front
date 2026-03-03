@@ -45,7 +45,7 @@ export function Header() {
 
         {/* Role Toggle */}
         <div
-          className="flex bg-slate-100 p-1 rounded-lg"
+          className="flex bg-slate-100 p-1 rounded-lg gap-0.5"
           role="group"
           aria-label="Cambiar rol de usuario"
         >

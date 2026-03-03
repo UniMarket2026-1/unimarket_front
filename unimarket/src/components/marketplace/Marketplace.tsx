@@ -257,7 +257,7 @@ export function Marketplace({ products, currentUserId }: MarketplaceProps) {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {displayedProducts.map((product) => (
               <ProductCard
                 key={product.id}
@@ -304,67 +304,80 @@ function ProductCard({
       layout
       initial={{ scale: 0.95, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      className="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all overflow-hidden"
+      className="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col"
       aria-label={`${product.name}, $${product.price.toLocaleString()}, condición: ${product.condition}`}
     >
-      <Link href={`/product/${product.id}`} className="block">
-        <div className="relative aspect-square">
+      {/* Image area — relative container for badges + favorite button */}
+      <div className="relative aspect-square overflow-hidden">
+        <Link
+          href={`/product/${product.id}`}
+          className="block w-full h-full"
+          tabIndex={-1}
+          aria-hidden="true"
+        >
           <ImageWithFallback
             src={product.imageUrl}
-            alt={product.name}
+            alt=""
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
-          <div className="absolute top-3 left-3 flex gap-2" aria-hidden="true">
-            <span
-              className={cn(
-                "px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-white shadow-sm",
-                conditionColor
-              )}
-            >
-              {product.condition}
-            </span>
-            <span className="bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md text-[10px] font-bold text-slate-700 uppercase tracking-wider shadow-sm">
-              {product.category}
-            </span>
-          </div>
+        </Link>
+
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex gap-2 pointer-events-none" aria-hidden="true">
+          <span
+            className={cn(
+              "px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-white shadow-sm",
+              conditionColor
+            )}
+          >
+            {product.condition}
+          </span>
+          <span className="bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md text-[10px] font-bold text-slate-700 uppercase tracking-wider shadow-sm">
+            {product.category}
+          </span>
         </div>
-      </Link>
 
-      {/* Favorite button — HU-01 */}
-      {product.sellerId !== currentUserId && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onToggleFavorite();
-          }}
-          aria-label={
-            isFavorite
-              ? `Quitar ${product.name} de favoritos`
-              : `Guardar ${product.name} en favoritos`
-          }
-          aria-pressed={isFavorite}
-          className={cn(
-            "absolute top-3 right-3 p-2 rounded-full shadow-sm transition-all",
-            isFavorite
-              ? "bg-rose-500 text-white scale-110"
-              : "bg-white/80 text-slate-400 hover:text-rose-500"
-          )}
-          style={{ position: "relative" }}
-        >
-          <Heart
-            size={18}
-            fill={isFavorite ? "currentColor" : "none"}
-            aria-hidden="true"
-          />
-        </button>
-      )}
+        {/* Favorite button — HU-01, positioned bottom-right to avoid badge overlap */}
+        {product.sellerId !== currentUserId && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleFavorite();
+            }}
+            aria-label={
+              isFavorite
+                ? `Quitar ${product.name} de favoritos`
+                : `Guardar ${product.name} en favoritos`
+            }
+            aria-pressed={isFavorite}
+            className={cn(
+              "absolute bottom-3 right-3 p-2.5 rounded-full shadow-md transition-all z-10",
+              "focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+              isFavorite
+                ? "bg-rose-500 text-white scale-110"
+                : "bg-white/90 backdrop-blur-sm text-slate-400 hover:text-rose-500 hover:bg-white"
+            )}
+          >
+            <Heart
+              size={18}
+              fill={isFavorite ? "currentColor" : "none"}
+              aria-hidden="true"
+            />
+          </button>
+        )}
+      </div>
 
-      <div className="p-4 flex flex-col gap-2">
-        <div className="flex justify-between items-start">
-          <h3 className="font-semibold text-slate-800 line-clamp-1 group-hover:text-indigo-600 transition-colors">
+      {/* Card content */}
+      <Link
+        href={`/product/${product.id}`}
+        className="flex flex-col gap-2 p-4 flex-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500"
+        aria-label={`Ver detalle de ${product.name}, $${product.price.toLocaleString()}`}
+      >
+        <div className="flex justify-between items-start gap-2">
+          <h3 className="font-semibold text-slate-800 line-clamp-1 group-hover:text-indigo-600 transition-colors min-w-0">
             {product.name}
           </h3>
-          <span className="font-bold text-indigo-700 whitespace-nowrap">
+          <span className="font-bold text-indigo-700 whitespace-nowrap shrink-0">
             ${product.price.toLocaleString()}
           </span>
         </div>
@@ -381,7 +394,7 @@ function ProductCard({
           </div>
         </div>
 
-        <div className="pt-2 border-t border-slate-50 flex items-center justify-between">
+        <div className="pt-2 mt-auto border-t border-slate-100 flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <div
               className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600"
@@ -399,7 +412,7 @@ function ProductCard({
             <span className="text-xs font-bold">{product.sellerRating}</span>
           </div>
         </div>
-      </div>
+      </Link>
     </motion.article>
   );
 }

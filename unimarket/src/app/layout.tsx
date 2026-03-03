@@ -25,10 +25,17 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${geist.className} antialiased bg-slate-50 min-h-screen`}>
+        <a href="#main-content" className="skip-link">
+          Ir al contenido principal
+        </a>
         <LanguageProvider>
           <AppProvider>
             <Header />
-            <main className="max-w-2xl mx-auto px-4 pt-20 pb-4">
+            <main
+              id="main-content"
+              className="max-w-2xl mx-auto px-4 pt-20 pb-4"
+              tabIndex={-1}
+            >
               {children}
             </main>
             <BottomNav />

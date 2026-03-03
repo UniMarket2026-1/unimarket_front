@@ -16,6 +16,7 @@ COPY . .
 
 # Standalone output for minimal image size
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_OUTPUT=standalone
 RUN npm run build
 
 # ─── Stage 3: Runner ─────────────────────────────────────────────────────────
